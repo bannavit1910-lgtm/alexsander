@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>จัดการสต็อก — <%= product.title %> — <%= storeName %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="admin-shell">
+  <%- include('../partials/admin-nav') %>
+  <div class="admin-main">
+    <div class="toolbar">
+      <h1>จัดการสต็อก — <%= product.title %></h1>
+      <a class="btn btn-ghost" href="/admin/products">← กลับไปหน้าสินค้า</a>
+    </div>
+
+    <div class="status-strip" style="grid-template-columns:repeat(3,1fr); margin-bottom:24px;">
+      <div class="cell">
+        <div class="label">ไอดีคงเหลือ (พร้อมขาย)</div>
+        <div class="stat-num teal"><%= availableCount %></div>
+      </div>
+      <div class="cell">
+        <div class="label">ไอดีที่ขายไปแล้ว</div>
+        <div class="stat-num gold"><%= soldCount %></div>
+      </div>
+      <div class="cell">
+        <div class="label">ขีดจำกัดสูงสุดต่อสินค้า</div>
+        <div class="stat-num"><%= maxStock %></div>
+      </div>
+    </div>
+
+    <div class="panel" style="max-width:640px; margin-bottom:24px;">
+      <h3>เติมไอดีเข้าสต็อก</h3>
+      <% if (error) { %><div class="form-error"><%= error %></div><% } %>
+      <form method="POST" action="/admin/products/<%= product.id %>/stock/add">
+        <div class="field">
+          <label>วางไอดี/ข้อมูลบัญชี — บรรทัดละ 1 รายการ (จะถูกส่งให้ลูกค้าอัตโนมัติทันทีที่กดซื้อ)</label>
+          <textarea name="items" rows="8" placeholder="เช่น
+username1:password1
+username2:password2
+username3:password3"></textarea>
+        </div>
+        <p style="color:var(--muted); font-size:12px; margin:-8px 0 14px;">
+          เพิ่มได้อีกไม่เกิน <strong style="color:var(--text);"><%= Math.max(0, maxStock - availableCount) %></strong> รายการ
+          (สต็อกคงเหลือปัจจุบัน <%= availableCount %> / <%= maxStock %>)
+        </p>
+        <button class="btn btn-primary btn-block" type="submit">เพิ่มเข้าสต็อก</button>
+      </form>
+    </div>
+
+    <div class="panel">
+      <h3>รายการไอดีทั้งหมดของสินค้านี้</h3>
+      <% if (items.length === 0) { %>
+        <p class="empty-note">ยังไม่มีไอดีในสต็อก — เติมไอดีแรกได้จากฟอร์มด้านบน</p>
+      <% } else { %>
+        <table>
+          <thead><tr><th>ไอดี / ข้อมูล</th><th>สถานะ</th><th>ขายให้</th><th>วันที่เพิ่ม</th><th></th></tr></thead>
+          <tbody>
+            <% items.forEach(i => { %>
+              <tr>
+                <td style="font-family:monospace; font-size:12px;"><%= i.content %></td>
+                <td><span class="tag <%= i.status === 'available' ? 'completed' : 'pending' %>"><%= i.status === 'available' ? 'พร้อมขาย' : 'ขายแล้ว' %></span></td>
+                <td><%= i.sold_to || '-' %></td>
+                <td><%= i.created_at %></td>
+                <td>
+                  <% if (i.status === 'available') { %>
+                    <form method="POST" action="/admin/products/<%= product.id %>/stock/<%= i.id %>/delete" onsubmit="return confirm('ลบไอดีนี้ออกจากสต็อก?');">
+                      <button class="btn btn-danger btn-sm" type="submit">ลบ</button>
+                    </form>
+                  <% } %>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } %>
+    </div>
+  </div>
+</div>
+</body>
+</html>

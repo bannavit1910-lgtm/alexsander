@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>คำขอเติมเงิน — <%= storeName %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="admin-shell">
+  <%- include('../partials/admin-nav') %>
+  <div class="admin-main">
+    <div class="toolbar"><h1>คำขอเติมเงิน</h1></div>
+    <div class="panel">
+      <% if (topups.length === 0) { %>
+        <p class="empty-note">ยังไม่มีคำขอเติมเงิน</p>
+      <% } else { %>
+        <table>
+          <thead><tr><th>ผู้ใช้</th><th>จำนวน</th><th>อ้างอิง</th><th>สถานะ</th><th>วันที่</th><th></th></tr></thead>
+          <tbody>
+            <% topups.forEach(t => { %>
+              <tr>
+                <td><%= t.username %></td>
+                <td>฿<%= (t.amount / 100).toFixed(2) %></td>
+                <td><%= t.reference || '-' %></td>
+                <td><span class="tag <%= t.status %>"><%= t.status %></span></td>
+                <td><%= t.created_at %></td>
+                <td style="white-space:nowrap;">
+                  <% if (t.status === 'pending') { %>
+                    <form method="POST" action="/admin/topups/<%= t.id %>/approve" style="display:inline;">
+                      <button class="btn btn-primary btn-sm" type="submit">อนุมัติ</button>
+                    </form>
+                    <form method="POST" action="/admin/topups/<%= t.id %>/reject" style="display:inline;">
+                      <button class="btn btn-danger btn-sm" type="submit">ปฏิเสธ</button>
+                    </form>
+                  <% } %>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } %>
+    </div>
+  </div>
+</div>
+</body>
+</html>

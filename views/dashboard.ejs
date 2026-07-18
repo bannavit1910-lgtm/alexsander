@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>แดชบอร์ดของฉัน — <%= storeName %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="wrap">
+  <%- include('partials/nav') %>
+
+  <div style="margin-top:28px;">
+    <% if (justBought) { %><div class="form-success">ซื้อสินค้าสำเร็จ! ตรวจสอบรายการได้ด้านล่าง</div><% } %>
+
+    <div class="status-strip">
+      <div class="cell">
+        <div class="label">สถานะสมาชิก</div>
+        <div class="stat-num gold"><%= user.tier %></div>
+      </div>
+      <div class="cell">
+        <div class="label">ยอดเงินคงเหลือ</div>
+        <div class="stat-num teal">฿<%= (user.balance / 100).toFixed(2) %></div>
+      </div>
+      <div class="cell">
+        <div class="label">จำนวนที่ซื้อแล้ว</div>
+        <div class="stat-num"><%= orders.length %> รายการ</div>
+      </div>
+      <div class="cell">
+        <div class="label">คำขอเติมเงิน</div>
+        <div class="stat-num"><%= topups.length %> รายการ</div>
+      </div>
+    </div>
+
+    <div class="dash-grid">
+      <div class="panel">
+        <h3>เติมเงินเข้าระบบ</h3>
+        <form method="POST" action="/topup">
+          <div class="field">
+            <label>ลิงก์ซองอั่งเปา TrueMoney Wallet</label>
+            <input type="text" name="reference" placeholder="วางลิงก์ https://gift.truemoney.com/campaign/?v=..." required>
+          </div>
+          <div class="field">
+            <label>จำนวนเงินโดยประมาณ (บาท) — ไม่บังคับ</label>
+            <input type="number" name="amount" min="0" step="0.01">
+          </div>
+          <button class="btn btn-gold btn-block" type="submit">ส่งซองรับเงินอัตโนมัติ</button>
+        </form>
+        <p style="color:var(--muted); font-size:12px; margin-top:12px;">
+          ระบบจะแลกซองและเติมเงินเข้าบัญชีให้อัตโนมัติตามยอดที่ยืนยันจริงจาก TrueMoney เท่านั้น
+          หากแลกซองไม่สำเร็จ รายการจะค้างเป็น "รอตรวจสอบ" ให้แอดมินตรวจสอบด้วยมือ
+        </p>
+
+        <h3 style="margin-top:24px;">ประวัติการเติมเงิน</h3>
+        <% if (topups.length === 0) { %>
+          <p class="empty-note">ยังไม่มีประวัติการเติมเงิน</p>
+        <% } else { %>
+          <table>
+            <thead><tr><th>วันที่</th><th>จำนวน</th><th>สถานะ</th></tr></thead>
+            <tbody>
+              <% topups.forEach(t => { %>
+                <tr>
+                  <td><%= t.created_at %></td>
+                  <td>฿<%= (t.amount / 100).toFixed(2) %></td>
+                  <td><span class="tag <%= t.status %>"><%= t.status %></span></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        <% } %>
+      </div>
+
+      <div class="panel">
+        <h3>ประวัติคำสั่งซื้อของฉัน</h3>
+        <% if (orders.length === 0) { %>
+          <p class="empty-note">คุณยังไม่เคยซื้อสินค้า</p>
+        <% } else { %>
+          <table>
+            <thead><tr><th>สินค้า</th><th>ราคาที่จ่าย</th><th>สถานะ</th><th>ไอดีที่ได้รับ</th></tr></thead>
+            <tbody>
+              <% orders.forEach(o => { %>
+                <tr>
+                  <td><%= o.product_title %></td>
+                  <td>฿<%= (o.price_paid / 100).toFixed(2) %></td>
+                  <td><span class="tag <%= o.status %>"><%= o.status %></span></td>
+                  <td>
+                    <% if (o.delivered_content) { %>
+                      <div style="display:flex; align-items:center; gap:6px;">
+                        <code style="font-size:12px; background:var(--panel-2); padding:4px 8px; border-radius:6px; word-break:break-all;"><%= o.delivered_content %></code>
+                        <button type="button" class="btn btn-ghost btn-sm" onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent); this.textContent='คัดลอกแล้ว'; setTimeout(()=>this.textContent='คัดลอก', 1500);">คัดลอก</button>
+                      </div>
+                    <% } else { %>
+                      <span class="empty-note" style="padding:0;">-</span>
+                    <% } %>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

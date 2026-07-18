@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title><%= storeName %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="wrap">
+  <%- include('partials/nav') %>
+
+  <section class="hero">
+    <h1>ไอดีเกมและสกินคุณภาพ<br>ระดับ <span>เทพ</span> ในที่เดียว</h1>
+    <p><%= storeName %> — เติมเงินง่าย ปลอดภัย ดูแลสมาชิกทุกระดับ</p>
+  </section>
+
+  <div class="filters">
+    <a class="tab <%= activeCategory === 'ทั้งหมด' ? 'active' : '' %>" href="/">ทั้งหมด</a>
+    <% categories.forEach(c => { %>
+      <a class="tab <%= activeCategory === c ? 'active' : '' %>" href="/?category=<%= encodeURIComponent(c) %>"><%= c %></a>
+    <% }) %>
+  </div>
+
+  <div class="section-head">
+    <h2>สินค้าทั้งหมด</h2>
+  </div>
+
+  <% if (products.length === 0) { %>
+    <p class="empty-note">ยังไม่มีสินค้าในหมวดนี้</p>
+  <% } %>
+
+  <div class="grid">
+    <% products.forEach(p => { %>
+      <div class="card">
+        <div class="thumb">
+          <div class="rarity-ribbon <%= p.rarity %>"><%= p.rarity === 'legend' ? 'LEGENDS' : (p.rarity === 'epic' ? 'EPIC' : 'RARE') %></div>
+          <% if (p.is_best_seller) { %><div class="badge-best">ขายดี</div><% } %>
+          <% if (p.discount_percent > 0) { %><div class="badge-sale">-<%= p.discount_percent %>%</div><% } %>
+          <% if (p.image_path) { %>
+            <img src="<%= p.image_path %>" alt="<%= p.title %>">
+          <% } else { %>
+            🎮
+          <% } %>
+        </div>
+        <div class="info">
+          <div class="title"><%= p.title %></div>
+          <div class="price-row">
+            <span class="now">฿<%= ((p.price * (100 - p.discount_percent) / 100) / 100).toFixed(2) %></span>
+            <% if (p.discount_percent > 0) { %><span class="was">฿<%= (p.price / 100).toFixed(2) %></span><% } %>
+          </div>
+          <div class="stock-note"><%= p.stock > 0 ? `เหลือ ${p.stock} รายการ` : 'สินค้าหมด' %></div>
+          <% if (currentUser) { %>
+            <form method="POST" action="/buy/<%= p.id %>">
+              <button class="btn btn-primary btn-block" type="submit" <%= p.stock <= 0 ? 'disabled' : '' %>>ซื้อสินค้านี้</button>
+            </form>
+          <% } else { %>
+            <a class="btn btn-ghost btn-block" href="/login">เข้าสู่ระบบเพื่อซื้อ</a>
+          <% } %>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+</div>
+</body>
+</html>

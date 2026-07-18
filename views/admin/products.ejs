@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>จัดการสินค้า — <%= storeName %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="admin-shell">
+  <%- include('../partials/admin-nav') %>
+  <div class="admin-main">
+    <div class="toolbar">
+      <h1>จัดการสินค้า</h1>
+      <a class="btn btn-primary" href="/admin/products/new">+ เพิ่มสินค้าใหม่</a>
+    </div>
+
+    <div class="panel">
+      <% if (products.length === 0) { %>
+        <p class="empty-note">ยังไม่มีสินค้า — เริ่มเพิ่มสินค้าแรกของคุณได้เลย</p>
+      <% } else { %>
+        <table>
+          <thead>
+            <tr><th></th><th>ชื่อสินค้า</th><th>หมวดหมู่</th><th>ระดับ</th><th>ราคา</th><th>ส่วนลด</th><th>สต็อก</th><th>ขายดี</th><th></th></tr>
+          </thead>
+          <tbody>
+            <% products.forEach(p => { %>
+              <tr>
+                <td>
+                  <% if (p.image_path) { %><img class="thumb-small" src="<%= p.image_path %>">
+                  <% } else { %><div class="thumb-small"></div><% } %>
+                </td>
+                <td><%= p.title %></td>
+                <td><%= p.category %></td>
+                <td><%= p.rarity %></td>
+                <td>฿<%= (p.price / 100).toFixed(2) %></td>
+                <td><%= p.discount_percent %>%</td>
+                <td><%= p.stock %> / 1000</td>
+                <td><%= p.is_best_seller ? 'ใช่' : '-' %></td>
+                <td style="white-space:nowrap;">
+                  <a class="btn btn-gold btn-sm" href="/admin/products/<%= p.id %>/stock">จัดการสต็อก</a>
+                  <a class="btn btn-ghost btn-sm" href="/admin/products/<%= p.id %>/edit">แก้ไข</a>
+                  <form method="POST" action="/admin/products/<%= p.id %>/delete" style="display:inline;" onsubmit="return confirm('ยืนยันการลบสินค้านี้? (ไอดีที่ยังไม่ได้ขายของสินค้านี้จะถูกลบไปด้วย)');">
+                    <button class="btn btn-danger btn-sm" type="submit">ลบ</button>
+                  </form>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } %>
+    </div>
+  </div>
+</div>
+</body>
+</html>

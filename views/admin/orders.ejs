@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>คำสั่งซื้อ — <%= storeName %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="admin-shell">
+  <%- include('../partials/admin-nav') %>
+  <div class="admin-main">
+    <div class="toolbar"><h1>คำสั่งซื้อทั้งหมด</h1></div>
+    <div class="panel">
+      <% if (orders.length === 0) { %>
+        <p class="empty-note">ยังไม่มีคำสั่งซื้อ</p>
+      <% } else { %>
+        <table>
+          <thead><tr><th>ลูกค้า</th><th>สินค้า</th><th>ราคาที่จ่าย</th><th>สถานะ</th><th>ไอดีที่ส่งไป</th><th>วันที่</th></tr></thead>
+          <tbody>
+            <% orders.forEach(o => { %>
+              <tr>
+                <td><%= o.username %></td>
+                <td><%= o.product_title %></td>
+                <td>฿<%= (o.price_paid / 100).toFixed(2) %></td>
+                <td><span class="tag <%= o.status %>"><%= o.status %></span></td>
+                <td style="font-family:monospace; font-size:12px;"><%= o.delivered_content || '-' %></td>
+                <td><%= o.created_at %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } %>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>เกิดข้อผิดพลาด — <%= typeof storeName !== 'undefined' ? storeName : 'Store' %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="wrap">
+  <%- include('partials/nav') %>
+  <div class="error-box">
+    <h1>เกิดข้อผิดพลาด</h1>
+    <p><%= message %></p>
+    <a class="btn btn-primary" href="/">กลับหน้าแรก</a>
+  </div>
+</div>
+</body>
+</html>

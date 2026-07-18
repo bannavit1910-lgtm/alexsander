@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>สมาชิก — <%= storeName %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="admin-shell">
+  <%- include('../partials/admin-nav') %>
+  <div class="admin-main">
+    <div class="toolbar"><h1>สมาชิกทั้งหมด</h1></div>
+    <div class="panel">
+      <table>
+        <thead><tr><th>ชื่อผู้ใช้</th><th>บทบาท</th><th>ระดับ</th><th>ยอดเงินคงเหลือ</th><th>สมัครเมื่อ</th><th>เปลี่ยนระดับ</th></tr></thead>
+        <tbody>
+          <% members.forEach(m => { %>
+            <tr>
+              <td><%= m.username %></td>
+              <td><%= m.role %></td>
+              <td><span class="tier-pill"><%= m.tier %></span></td>
+              <td>฿<%= (m.balance / 100).toFixed(2) %></td>
+              <td><%= m.created_at %></td>
+              <td>
+                <form method="POST" action="/admin/members/<%= m.id %>/tier" style="display:flex; gap:6px;">
+                  <select name="tier" style="padding:6px 8px; border-radius:6px; background:var(--panel-2); color:var(--text); border:1px solid var(--line);">
+                    <option value="Member" <%= m.tier === 'Member' ? 'selected' : '' %>>Member</option>
+                    <option value="VIP" <%= m.tier === 'VIP' ? 'selected' : '' %>>VIP</option>
+                    <option value="MVP" <%= m.tier === 'MVP' ? 'selected' : '' %>>MVP</option>
+                  </select>
+                  <button class="btn btn-ghost btn-sm" type="submit">บันทึก</button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body>
+</html>

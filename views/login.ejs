@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>เข้าสู่ระบบ — <%= storeName %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="wrap">
+  <%- include('partials/nav') %>
+  <div class="auth-box">
+    <h1>เข้าสู่ระบบ</h1>
+    <% if (error) { %><div class="form-error"><%= error %></div><% } %>
+    <form method="POST" action="/login">
+      <div class="field">
+        <label>ชื่อผู้ใช้</label>
+        <input type="text" name="username" required autofocus>
+      </div>
+      <div class="field">
+        <label>รหัสผ่าน</label>
+        <input type="password" name="password" required>
+      </div>
+      <button class="btn btn-primary btn-block" type="submit">เข้าสู่ระบบ</button>
+    </form>
+    <div class="switch">ยังไม่มีบัญชี? <a href="/register">สมัครสมาชิกที่นี่</a></div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>สมัครสมาชิก — <%= storeName %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="wrap">
+  <%- include('partials/nav') %>
+  <div class="auth-box">
+    <h1>สมัครสมาชิก</h1>
+    <% if (error) { %><div class="form-error"><%= error %></div><% } %>
+    <form method="POST" action="/register">
+      <div class="field">
+        <label>ชื่อผู้ใช้ (อย่างน้อย 4 ตัวอักษร)</label>
+        <input type="text" name="username" required minlength="4" autofocus>
+      </div>
+      <div class="field">
+        <label>รหัสผ่าน (อย่างน้อย 6 ตัวอักษร)</label>
+        <input type="password" name="password" required minlength="6">
+      </div>
+      <div class="field">
+        <label>ยืนยันรหัสผ่าน</label>
+        <input type="password" name="confirm_password" required minlength="6">
+      </div>
+      <button class="btn btn-primary btn-block" type="submit">สมัครสมาชิก</button>
+    </form>
+    <div class="switch">มีบัญชีอยู่แล้ว? <a href="/login">เข้าสู่ระบบ</a></div>
+  </div>
+</div>
+</body>
+</html>

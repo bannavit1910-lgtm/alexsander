@@ -1,0 +1,26 @@
+<header>
+  <a class="brand" href="/"><span class="dot"></span><%= storeName %></a>
+  <nav class="links">
+    <a href="/">หน้าแรก</a>
+    <% if (currentUser) { %>
+      <a href="/dashboard">แดชบอร์ดของฉัน</a>
+      <% if (currentUser.role === 'admin') { %><a href="/admin">แอดมิน</a><% } %>
+    <% } %>
+  </nav>
+  <% if (currentUser) { %>
+    <div class="member-mini">
+      <div class="avatar"></div>
+      <div>
+        <div style="font-size:13px; font-weight:600;"><%= currentUser.username %> <span class="tier-pill"><%= currentUser.tier %></span></div>
+        <form method="POST" action="/logout" style="display:inline;">
+          <button class="btn-link" type="submit">ออกจากระบบ</button>
+        </form>
+      </div>
+    </div>
+  <% } else { %>
+    <div style="display:flex; gap:10px;">
+      <a class="btn btn-ghost btn-sm" href="/login">เข้าสู่ระบบ</a>
+      <a class="btn btn-primary btn-sm" href="/register">สมัครสมาชิก</a>
+    </div>
+  <% } %>
+</header>

@@ -1,0 +1,10 @@
+<div class="admin-side">
+  <a class="brand" href="/admin"><span class="dot"></span><%= storeName %></a>
+  <a href="/admin" class="<%= currentPath === '/admin' ? 'active' : '' %>">ภาพรวม</a>
+  <a href="/admin/products" class="<%= currentPath.startsWith('/admin/products') ? 'active' : '' %>">จัดการสินค้า</a>
+  <a href="/admin/members" class="<%= currentPath === '/admin/members' ? 'active' : '' %>">สมาชิก</a>
+  <a href="/admin/orders" class="<%= currentPath === '/admin/orders' ? 'active' : '' %>">คำสั่งซื้อ</a>
+  <a href="/admin/topups" class="<%= currentPath === '/admin/topups' ? 'active' : '' %>">คำขอเติมเงิน</a>
+  <a href="/admin/logs" class="<%= currentPath === '/admin/logs' ? 'active' : '' %>">Activity Log</a>
+  <a href="/" >← กลับหน้าร้าน</a>
+</div>

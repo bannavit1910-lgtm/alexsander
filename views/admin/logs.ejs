@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>Activity Log — <%= storeName %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="admin-shell">
+  <%- include('../partials/admin-nav') %>
+  <div class="admin-main">
+    <div class="toolbar"><h1>บันทึกกิจกรรมแอดมิน (Activity Log)</h1></div>
+    <div class="panel">
+      <% if (logs.length === 0) { %>
+        <p class="empty-note">ยังไม่มีบันทึกกิจกรรม</p>
+      <% } else { %>
+        <table>
+          <thead><tr><th>แอดมิน</th><th>การกระทำ</th><th>รายละเอียด</th><th>วันที่</th></tr></thead>
+          <tbody>
+            <% logs.forEach(l => { %>
+              <tr>
+                <td><%= l.username %></td>
+                <td><%= l.action %></td>
+                <td><%= l.detail %></td>
+                <td><%= l.created_at %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } %>
+    </div>
+  </div>
+</div>
+</body>
+</html>

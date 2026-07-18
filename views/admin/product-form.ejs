@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title><%= product ? 'แก้ไขสินค้า' : 'เพิ่มสินค้าใหม่' %> — <%= storeName %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="admin-shell">
+  <%- include('../partials/admin-nav') %>
+  <div class="admin-main">
+    <div class="toolbar"><h1><%= product ? 'แก้ไขสินค้า' : 'เพิ่มสินค้าใหม่' %></h1></div>
+
+    <div class="panel" style="max-width:560px;">
+      <% if (error) { %><div class="form-error"><%= error %></div><% } %>
+      <form method="POST" action="<%= product ? `/admin/products/${product.id}/edit` : '/admin/products/new' %>" enctype="multipart/form-data">
+        <div class="field">
+          <label>ชื่อสินค้า</label>
+          <input type="text" name="title" required value="<%= product ? product.title : '' %>">
+        </div>
+        <div class="field">
+          <label>รายละเอียด</label>
+          <textarea name="description" rows="3"><%= product ? product.description : '' %></textarea>
+        </div>
+        <div class="field">
+          <label>หมวดหมู่</label>
+          <input type="text" name="category" placeholder="เช่น ไอดี RoV, สกิน Valorant" value="<%= product ? product.category : '' %>">
+        </div>
+        <div class="field">
+          <label>ระดับความหายาก (rarity)</label>
+          <select name="rarity">
+            <option value="rare" <%= product && product.rarity === 'rare' ? 'selected' : '' %>>Rare</option>
+            <option value="epic" <%= product && product.rarity === 'epic' ? 'selected' : '' %>>Epic</option>
+            <option value="legend" <%= product && product.rarity === 'legend' ? 'selected' : '' %>>Legends / เทพ</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>ราคา (บาท)</label>
+          <input type="number" name="price" step="0.01" min="0" required value="<%= product ? (product.price/100).toFixed(2) : '' %>">
+        </div>
+        <div class="field">
+          <label>ส่วนลด (%)</label>
+          <input type="number" name="discount_percent" min="0" max="100" value="<%= product ? product.discount_percent : 0 %>">
+        </div>
+        <% if (product) { %>
+          <div class="field">
+            <label>สต็อกไอดี</label>
+            <div style="font-size:13px; color:var(--muted);">
+              ตอนนี้มีไอดีว่างอยู่ <strong style="color:var(--text);"><%= product.stock %></strong> รายการ —
+              จัดการ/เติมไอดีจริงได้ที่หน้า
+              <a href="/admin/products/<%= product.id %>/stock" style="color:var(--rare);">จัดการสต็อก</a>
+            </div>
+          </div>
+        <% } else { %>
+          <div class="field">
+            <div style="font-size:13px; color:var(--muted);">
+              หลังบันทึกสินค้านี้แล้ว ระบบจะพาไปหน้า "จัดการสต็อก" ให้เติมไอดีจริงต่อได้ทันที
+            </div>
+          </div>
+        <% } %>
+        <div class="field">
+          <label><input type="checkbox" name="is_best_seller" value="1" <%= product && product.is_best_seller ? 'checked' : '' %>> ติดแท็ก "ขายดี"</label>
+        </div>
+        <div class="field">
+          <label>รูปสินค้า <%= product && product.image_path ? '(อัปโหลดใหม่เพื่อแทนที่รูปเดิม)' : '' %></label>
+          <% if (product && product.image_path) { %>
+            <img src="<%= product.image_path %>" style="width:80px;height:80px;object-fit:cover;border-radius:8px;margin-bottom:8px;display:block;">
+          <% } %>
+          <input type="file" name="image" accept="image/png,image/jpeg,image/webp">
+        </div>
+        <button class="btn btn-primary btn-block" type="submit"><%= product ? 'บันทึกการแก้ไข' : 'เพิ่มสินค้า' %></button>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+</html>

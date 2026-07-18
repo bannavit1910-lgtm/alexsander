@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>แอดมิน — ภาพรวม — <%= storeName %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="admin-shell">
+  <%- include('../partials/admin-nav') %>
+  <div class="admin-main">
+    <div class="toolbar"><h1>ภาพรวมร้านค้า</h1></div>
+
+    <div class="stat-cards">
+      <div class="stat-card"><div class="label">สินค้าทั้งหมด</div><div class="num"><%= productCount %></div></div>
+      <div class="stat-card"><div class="label">สมาชิกทั้งหมด</div><div class="num"><%= memberCount %></div></div>
+      <div class="stat-card"><div class="label">คำขอเติมเงินรอตรวจสอบ</div><div class="num"><%= pendingTopups %></div></div>
+      <div class="stat-card"><div class="label">ยอดขายวันนี้</div><div class="num">฿<%= (salesToday / 100).toFixed(2) %></div></div>
+    </div>
+
+    <div class="panel">
+      <h3>ยอดขายรายวัน (14 วันล่าสุด)</h3>
+      <% const max = Math.max(1, ...dailySales.map(d => d.total)); %>
+      <div class="bars">
+        <% dailySales.forEach(d => { %>
+          <div class="bar" style="height:<%= Math.max(4, (d.total / max) * 100) %>%">
+            <span>฿<%= (d.total/100).toFixed(0) %></span>
+          </div>
+        <% }) %>
+        <% if (dailySales.length === 0) { %><p class="empty-note">ยังไม่มีข้อมูลยอดขาย</p><% } %>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
