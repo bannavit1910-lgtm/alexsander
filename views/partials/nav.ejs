@@ -11,7 +11,11 @@
     <div class="member-mini">
       <div class="avatar"></div>
       <div>
-        <div style="font-size:13px; font-weight:600;"><%= currentUser.username %> <span class="tier-pill"><%= currentUser.tier %></span></div>
+        <div style="font-size:13px; font-weight:600;">
+          <%= currentUser.username %> <span class="tier-pill"><%= currentUser.tier %></span>
+          <!-- ลิงก์ติดต่อ Discord ของคุณ -->
+          <a href="https://discord.com/users/1191250944810295396" target="_blank" style="margin-left: 10px; color: #5865F2; text-decoration: none; font-size: 12px;">[ติดต่อแอดมิน]</a>
+        </div>
         <form method="POST" action="/logout" style="display:inline;">
           <button class="btn-link" type="submit">ออกจากระบบ</button>
         </form>
