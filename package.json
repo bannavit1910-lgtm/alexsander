@@ -9,12 +9,13 @@
   },
   "dependencies": {
     "@fortune-inc/tw-voucher": "^1.0.0",
-    "better-sqlite3": "^11.3.0",
     "bcrypt": "^5.1.1",
+    "better-sqlite3": "^11.3.0",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
     "express": "^4.19.2",
     "express-session": "^1.18.0",
+    "mongoose": "^9.7.4",
     "multer": "^1.4.5-lts.1"
   },
   "devDependencies": {

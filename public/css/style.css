@@ -156,3 +156,37 @@ body::before {
     from { transform: scale(1); opacity: 0.5; }
     to { transform: scale(1.2); opacity: 0.8; }
 }
+/* พื้นหลังสายฟ้า */
+body {
+    background-color: #050505;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.lightning-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(circle, rgba(67, 217, 195, 0.1) 0%, transparent 70%);
+    opacity: 0.3;
+}
+
+/* เอฟเฟกต์สายฟ้าใช้พื้นหลังเป็นลายเส้นที่ขยับได้ */
+.lightning-overlay::before {
+    content: "";
+    position: absolute;
+    top: -50%; left: -50%; width: 200%; height: 200%;
+    background: url('https://www.transparenttextures.com/patterns/cubes.png'); /* สามารถหาภาพ Lightning Texture มาใส่แทนได้ */
+    filter: invert(1) hue-rotate(180deg);
+    animation: flash 10s infinite;
+}
+
+@keyframes flash {
+    0%, 95%, 99% { opacity: 0; }
+    96%, 98% { opacity: 0.4; }
+    97% { opacity: 0.8; }
+}
