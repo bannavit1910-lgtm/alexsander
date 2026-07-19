@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
+const connectDB = require('./db');
 const rateLimit = require('./middleware/rateLimit');
 const { attachUser } = require('./middleware/auth');
 
@@ -47,6 +48,11 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Alexsander Store กำลังทำงานที่ http://localhost:${PORT}`);
+
+// ต้องเชื่อมต่อ MongoDB ให้สำเร็จก่อน ค่อยเปิดรับ request
+// (ถ้าเชื่อมต่อไม่ได้ connectDB() จะ process.exit(1) เอง — จะได้เห็นสาเหตุจริงใน log ทันที)
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Alexsander Store กำลังทำงานที่ http://localhost:${PORT}`);
+  });
 });
